@@ -12,6 +12,7 @@ import { getShuffledOptions, getResult } from './game.js';
 import {
   CHALLENGE_COMMAND,
   TEST_COMMAND,
+  VALUE_COMMAND,
   HasGuildCommands,
 } from './commands.js';
 
@@ -88,6 +89,14 @@ app.post('/interactions', async function (req, res) {
               ],
             },
           ],
+        },
+      });
+    }
+    if (name == 'value') {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `Rock papers scissors challenge from <@$>`,
         },
       });
     }
@@ -175,12 +184,13 @@ app.post('/interactions', async function (req, res) {
   }
 });
 
-app.listen(PORT, () => {
-  console.log('Listening on port', PORT);
+app.listen(42069, () => {
+  console.log('Listening on port', 42069);
 
   // Check if guild commands from commands.json are installed (if not, install them)
   HasGuildCommands(process.env.APP_ID, process.env.GUILD_ID, [
     TEST_COMMAND,
     CHALLENGE_COMMAND,
+    VALUE_COMMAND,
   ]);
 });

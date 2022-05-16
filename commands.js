@@ -80,3 +80,20 @@ export const CHALLENGE_COMMAND = {
   ],
   type: 1,
 };
+
+export const VALUE_COMMAND = {
+  name: 'value',
+  description: 'write a value',
+  options:
+  [
+    {
+      type: 4,
+      name: 'value',
+      description: 'your value',
+      required: true,
+      min_value: 5,
+      max_value: 20,
+    }
+  ],
+  type: 1,
+};
