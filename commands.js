@@ -22,6 +22,10 @@ async function HasGuildCommand(appId, guildId, command) {
       if (!installedNames.includes(command['name'])) {
         console.log(`Installing "${command['name']}"`);
         InstallGuildCommand(appId, guildId, command);
+      }  else if (command['name'] == 'stringmin') {
+        console.log('Updating string');
+        console.log(data)
+        UpdateGuildCommand(appId, guildId, command, '981334001585225738');
       } else {
         console.log(`"${command['name']}" command already installed`);
       }
@@ -38,6 +42,17 @@ export async function InstallGuildCommand(appId, guildId, command) {
   // install command
   try {
     await DiscordRequest(endpoint, { method: 'POST', body: command });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function UpdateGuildCommand(appId, guildId, command, command_id) {
+  // API endpoint to get and post guild commands
+  const endpoint = `applications/${appId}/guilds/${guildId}/commands/${command_id}`;
+  // install command
+  try {
+    await DiscordRequest(endpoint, { method: 'PATCH', body: command });
   } catch (err) {
     console.error(err);
   }
@@ -93,6 +108,73 @@ export const VALUE_COMMAND = {
       required: true,
       min_value: 5,
       max_value: 20,
+    }
+  ],
+  type: 1,
+};
+
+export const STRING_COMMAND = {
+  name: 'string2',
+  description: 'write a string',
+  options:
+  [
+    {
+      type: 3,
+      name: 'value',
+      description: 'your value',
+      required: true,
+      min_length: 2,
+      max_length: 10,
+    }
+  ],
+  type: 1,
+};
+
+
+export const STRING_MIN_COMMAND = {
+  name: 'stringmin',
+  description: 'write a string',
+  options:
+  [
+    {
+      type: 3,
+      name: 'value',
+      description: 'your value',
+      required: true,
+      min_length: 3,
+    }
+  ],
+  type: 1,
+};
+
+export const STRING_MAX_COMMAND = {
+  name: 'stringmax',
+  description: 'write a string',
+  options:
+  [
+    {
+      type: 3,
+      name: 'value',
+      description: 'your value',
+      required: true,
+      max_length: 10,
+    }
+  ],
+  type: 1,
+};
+
+export const STRING_BAD_COMMAND = {
+  name: 'stringbad',
+  description: 'write a string',
+  options:
+  [
+    {
+      type: 3,
+      name: 'value',
+      description: 'your value',
+      required: true,
+      max_length: 3,
+      min_length: 13,
     }
   ],
   type: 1,

@@ -13,6 +13,10 @@ import {
   CHALLENGE_COMMAND,
   TEST_COMMAND,
   VALUE_COMMAND,
+  STRING_COMMAND,
+  STRING_MIN_COMMAND,
+  STRING_MAX_COMMAND,
+  STRING_BAD_COMMAND,
   HasGuildCommands,
 } from './commands.js';
 
@@ -97,6 +101,46 @@ app.post('/interactions', async function (req, res) {
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           content: `Rock papers scissors challenge from <@$>`,
+        },
+      });
+    }
+    if (name == 'string') {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `Rock papers scissors challenge `,
+        },
+      });
+    }
+    if (name == 'string2') {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `Rock papers scissors challenge oaisdoiasao `,
+        },
+      });
+    }
+    if (name == 'stringmin') {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `Rock papers scissors challenge min`,
+        },
+      });
+    }
+    if (name == 'stringmax') {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `Rock papers scissors challenge max `,
+        },
+      });
+    }
+    if (name == 'stringbad') {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `how?`,
         },
       });
     }
@@ -192,5 +236,9 @@ app.listen(42069, () => {
     TEST_COMMAND,
     CHALLENGE_COMMAND,
     VALUE_COMMAND,
+    STRING_COMMAND,
+    STRING_MIN_COMMAND,
+    STRING_MAX_COMMAND,
+    STRING_BAD_COMMAND,
   ]);
 });
