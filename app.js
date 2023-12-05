@@ -17,11 +17,15 @@ import {
   STRING_MIN_COMMAND,
   STRING_MAX_COMMAND,
   STRING_BAD_COMMAND,
+  ATTACHMENT_COMMAND,
+  MAX_ATTACHMENT_COMMAND,
   HasGuildCommands,
+  HasGlobalCommands,
 } from './commands.js';
 
 // Create an express app
 const app = express();
+console.log({env: process.env});
 // Get port, or default to 3000
 const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
@@ -144,6 +148,41 @@ app.post('/interactions', async function (req, res) {
         },
       });
     }
+    if (name == 'attachments') {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `\`\`\`json\n${JSON.stringify(data, null, 2).slice(
+              0,
+              1900
+            )}\n\`\`\``
+        },
+      });
+    }
+        if (name == 'max-attachments') {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `\`\`\`json\n${JSON.stringify(data, null, 2).slice(
+              0,
+              1900
+            )}\n\`\`\``
+        },
+      });
+        }
+          if (name == 'user-app') {
+            return res.send({
+              type:  InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `\`\`\`json\n${JSON.stringify(data, null, 2).slice(
+              0,
+              1900
+            )}\n\`\`\``
+        },
+            });
+          }
+
+
   }
 
   /**
@@ -240,5 +279,11 @@ app.listen(42069, () => {
     STRING_MIN_COMMAND,
     STRING_MAX_COMMAND,
     STRING_BAD_COMMAND,
+    ATTACHMENT_COMMAND,
+    MAX_ATTACHMENT_COMMAND,
+  ]);
+  HasGlobalCommands(process.env.APP_ID, [
+    ATTACHMENT_COMMAND,
+    MAX_ATTACHMENT_COMMAND,
   ]);
 });

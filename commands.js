@@ -14,7 +14,10 @@ async function HasGuildCommand(appId, guildId, command) {
 
   try {
     const res = await DiscordRequest(endpoint, { method: 'GET' });
-    const data = await res.json();
+    const text = await res.text()
+     console.log({'~~ status':res.status, res: text, })
+    const data = JSON.parse(text);
+    //console.log({'~~ data':data})
 
     if (data) {
       const installedNames = data.map((c) => c['name']);
@@ -22,10 +25,10 @@ async function HasGuildCommand(appId, guildId, command) {
       if (!installedNames.includes(command['name'])) {
         console.log(`Installing "${command['name']}"`);
         InstallGuildCommand(appId, guildId, command);
-      }  else if (command['name'] == 'stringmin') {
+      }  else if (command['name'] == 'max-attachments') {
         console.log('Updating string');
         console.log(data)
-        UpdateGuildCommand(appId, guildId, command, '981334001585225738');
+        //UpdateGuildCommand(appId, guildId, command, '1141584896788004864');
       } else {
         console.log(`"${command['name']}" command already installed`);
       }
@@ -50,6 +53,66 @@ export async function InstallGuildCommand(appId, guildId, command) {
 export async function UpdateGuildCommand(appId, guildId, command, command_id) {
   // API endpoint to get and post guild commands
   const endpoint = `applications/${appId}/guilds/${guildId}/commands/${command_id}`;
+  // install command
+  try {
+    await DiscordRequest(endpoint, { method: 'PATCH', body: command });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function HasGlobalCommands(appId, commands) {
+  if (appId === '') return;
+
+  commands.forEach((c) => HasGlobalCommand(appId, c));
+}
+
+// Checks for a command
+async function HasGlobalCommand(appId, command) {
+  // API endpoint to get and post guild commands
+  const endpoint = `applications/${appId}/commands`;
+
+  try {
+    const res = await DiscordRequest(endpoint, { method: 'GET' });
+    const text = await res.text()
+    //console.log({'~~ status':res.status, res: text, })
+    const data = JSON.parse(text);
+    //console.log({'~~ data':data})
+
+    if (data) {
+      const installedNames = data.map((c) => c['name']);
+      // This is just matching on the name, so it's not good for updates
+      if (!installedNames.includes(command['name'])) {
+        console.log(`Installing global "${command['name']}"`);
+        InstallGlobalCommand(appId, command);
+      }  else if (command['name'] == 'max-attachments') {
+        console.log('Updating global string');
+        console.log(data)
+        //UpdateGlobalCommand(appId, command, '1141584896788004864');
+      } else {
+        console.log(`"${command['name']}" command already globally installed`);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Installs a command
+export async function InstallGlobalCommand(appId, command) {
+  // API endpoint to get and post guild commands
+  const endpoint = `applications/${appId}/commands`;
+  // install command
+  try {
+    await DiscordRequest(endpoint, { method: 'POST', body: command });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function UpdateGlobalCommand(appId, command, command_id) {
+  // API endpoint to get and post guild commands
+  const endpoint = `applications/${appId}/commands/${command_id}`;
   // install command
   try {
     await DiscordRequest(endpoint, { method: 'PATCH', body: command });
@@ -173,9 +236,201 @@ export const STRING_BAD_COMMAND = {
       name: 'value',
       description: 'your value',
       required: true,
-      max_length: 3,
-      min_length: 13,
     }
   ],
   type: 1,
+};
+
+export const ATTACHMENT_COMMAND = {
+  name: 'attachments',
+  description: 'attach multiple files',
+  options: [
+    {
+      type: 11,
+      name: 'file1',
+      description: 'Provide a file',
+      required: true,
+    },
+    {
+      type: 3,
+      name: 'string-required',
+      description: 'A required string arg',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file2',
+      description: 'Provide another file',
+      required: false,
+    },
+    {
+      type: 11,
+      name: 'file3',
+      description: 'Provide another file (optionally)',
+      required: false,
+    },
+    {
+      type: 3,
+      name: 'string-optional',
+      description: 'An optional string arg',
+      required: false,
+    },
+  ],
+};
+
+export const MAX_ATTACHMENT_COMMAND = {
+  name: 'max-attachments',
+  description: 'attach multiple files',
+  options: [
+    {
+      type: 11,
+      name: 'file1',
+      description: 'Provide a file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file2',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file3',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file4',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file5',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file6',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file7',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file8',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file9',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file10',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file11',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file12',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file13',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file14',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file15',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file16',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file17',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file18',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file19',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file20',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file21',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file22',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file23',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file24',
+      description: 'Provide another file',
+      required: true,
+    },
+    {
+      type: 11,
+      name: 'file25',
+      description: 'Provide another file',
+      required: true,
+    },
+  ],
 };
